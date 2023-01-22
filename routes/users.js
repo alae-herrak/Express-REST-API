@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
+//create a new user
 router.post("/", async (req, res) => {
   const user = new User({
     fullName: req.body.fullName,
@@ -16,10 +17,50 @@ router.post("/", async (req, res) => {
   }
 });
 
+// get all users
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+//get a user by id
+router.get("/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    res.json(user);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+//delete a user by id
+router.delete("/:userId", async (req, res) => {
+  try {
+    const removedUser = await User.deleteOne({ _id: req.params.userId });
+    res.json(removedUser);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+//update a user
+router.patch("/:userId", async (req, res) => {
+  try {
+    const updatedUser = await User.updateOne(
+      { _id: req.params.userId },
+      {
+        $set: {
+          fullName: req.body.fullName,
+          email: req.body.email,
+          phoneNumber: req.body.phoneNumber,
+        },
+      }
+    );
+    res.json(updatedUser);
   } catch (error) {
     res.json({ message: error });
   }
