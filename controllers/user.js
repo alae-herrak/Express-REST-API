@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 //create a new user
 
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
   const user = new User({
     fullName: req.body.fullName,
     email: req.body.email,
@@ -18,7 +18,7 @@ export const createUser = async (req, res) => {
 
 // get all users
 
-export const getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -29,7 +29,7 @@ export const getUser = async (req, res) => {
 
 //get a user by id
 
-export const getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     res.json(user);
@@ -40,7 +40,7 @@ export const getUserById = async (req, res) => {
 
 //delete a user by id
 
-export const deleteUserById = async (req, res) => {
+const deleteUserById = async (req, res) => {
   try {
     const removedUser = await User.deleteOne({ _id: req.params.userId });
     res.json(removedUser);
@@ -51,7 +51,7 @@ export const deleteUserById = async (req, res) => {
 
 //update a user
 
-export const updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const updatedUser = await User.updateOne(
       { _id: req.params.userId },
@@ -67,4 +67,12 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     res.json({ message: error });
   }
+};
+
+module.exports = {
+  createUser,
+  deleteUserById,
+  getUser,
+  getUserById,
+  updateUser,
 };
